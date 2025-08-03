@@ -1,0 +1,89 @@
+Project Prompt / Instruction
+Title: AIUB Rickshaw Guide – Fare Estimation Web App
+🎯 Objective:
+Build a mobile-first, one-page Progressive Web App (PWA) called "AIUB Rickshaw Guide" to help AIUB students estimate fair rickshaw fares between AIUB and nearby locations.
+The app will be simple, responsive, accessible in both English and Bengali, and installable to mobile home screens.
+
+🔑 Core Features:
+✅ 1. Welcome Header:
+A friendly greeting to welcome students to the tool.
+
+✅ 2. Main Query Section:
+Headline: “Where are you going from and to?”
+
+From Input: Autocomplete dropdown with places like:
+
+AIUB, Kuril Railgate, Jamuna Future Park, G Block, etc.
+
+To Input: Same list of places (interchangeable)
+
+✅ 3. Estimated Result:
+After selecting "From" and "To":
+
+Show estimated fare based on a predefined dataset
+
+Calculate distance using Google Maps API
+
+Optionally show the route on a map
+
+✅ 4. 🔄 Reverse Route Option:
+Include a Swap button (🔁) between “From” and “To” inputs.
+
+Example: Easily switch between AIUB → JFP and JFP → AIUB
+
+✅ 5. 📍 Live Location to AIUB:
+Include a "Use My Location" button.
+If user taps it:
+
+Automatically fill the “From” field with current location
+
+Keep "To" = AIUB
+
+Calculate fare and distance accordingly using browser geolocation API
+
+✅ 6. 🌙/☀️ Theme Toggle:
+Allow users to switch between Dark Mode and Light Mode
+
+Ideal for mobile users, especially during night use
+
+✅ 7. 🌐 Language Toggle:
+Switch UI between English ↔ বাংলা using a toggle button
+
+✅ 8. ℹ️ Advisory Message:
+A small text section showing rickshaw fare awareness or student safety tips
+
+✅ 9. 📱 Add to Home Screen (PWA):
+Make the site a Progressive Web App (PWA)
+
+Mobile users can install it to their home screen
+
+Fast load, offline-ready (optional)
+
+Modern app-like feel
+
+✅ 10. 🔻 Footer:
+Simple credit section:
+
+"Made for AIUB students by [Your Name]"
+
+📊 Fare Dataset (Sample):
+From	To	Fare
+AIUB	Kuril Bishwaroad	20 TK
+AIUB	Kuril Railgate	30 TK
+AIUB	Jamuna Future Park	40 TK
+AIUB	G Block	30 TK
+AIUB	Evercare Gate	40 TK                                                                                                               AIUB	Top Ten (A Block)	30 TK
+AIUB	G Block	30 TK
+AIUB	Hazi Bari Masjid	20 TK
+AIUB	Mridha Bari Masjid	20 TK
+AIUB	Walton Bari	40 TK
+AIUB	Jamuna Check Post	30 TK
+AIUB	K Block	60 TK
+AIUB	Ghatpar	30 TK
+AIUB	Koilabari	20 TK
+AIUB	Tiner Bera	30 TK
+AIUB	300 Feet Mor	40 TK
+AIUB	I Block	40 TK
+AIUB	Kuril Chowrasta	30 TK
+AIUB	Kuril Kazi Bari	20 TK
+AIUB	Rupayan	20 TK
