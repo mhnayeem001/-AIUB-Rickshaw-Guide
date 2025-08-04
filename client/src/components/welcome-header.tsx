@@ -5,13 +5,19 @@ export function WelcomeHeader() {
 
   return (
     <div className="text-center space-y-2">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white" data-testid="welcome-title">
-        {t('Welcome, AIUB Student!', 'স্বাগতম, এআইইউবি শিক্ষার্থী!')}
+      <h2
+        className="text-2xl font-bold text-gray-900 dark:text-white"
+        data-testid="welcome-title"
+      >
+        {t('Hello AIUBians!', 'হ্যালো এআইইউবিয়ানস!')}
       </h2>
-      <p className="text-gray-600 dark:text-gray-300" data-testid="welcome-description">
+      <p
+        className="text-gray-600 dark:text-gray-300"
+        data-testid="welcome-description"
+      >
         {t(
-          'Get fair rickshaw fare estimates for your daily commute',
-          'আপনার দৈনিক যাতায়াতের জন্য ন্যায্য রিকশা ভাড়ার অনুমান পান'
+          'Make your daily commute easier by knowing the fair rickshaw fare.',
+          'ন্যায্য রিকশা ভাড়ার জানার মাধ্যমে আপনার দৈনিক যাতায়াত সহজ করুন।'
         )}
       </p>
     </div>

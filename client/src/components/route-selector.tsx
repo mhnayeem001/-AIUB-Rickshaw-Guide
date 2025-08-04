@@ -1,4 +1,4 @@
-import { useState } from 'react';
+
 import { ArrowUpDown, MapPin, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -47,7 +47,7 @@ export function RouteSelector({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-4">
       <h3 className="text-lg font-semibold mb-4" data-testid="route-selector-title">
-        {t('Where are you going from and to?', 'আপনি কোথা থেকে কোথায় যাচ্ছেন?')}
+        {t('What is your starting point and destination?', 'আপনি কোথা থেকে কোথায় যাচ্ছেন?')}
       </h3>
       
       {/* From Input */}

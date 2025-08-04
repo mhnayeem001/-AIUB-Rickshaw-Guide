@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIUB Rickshaw Guide - Fare Estimation</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQUlVQiBSaWNrc2hhcyBHdWlkZSIsInNob3J0X25hbWUiOiJBSVVCIFJpY2tzaGF3Iiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxMjEyMTIiLCJ0aGVtZV9jb2xvciI6IiMxOTc2RDIiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCM2FXUjBhRDBpTVRreUlpQm9aV2xuYUhROUlqRTVNaUlnZG1sbGQwSnZlRDBpTUNBd0lERTVNaUF4T1RJaUlHWnBiR3c5SWlNeE9UYzJSRElpUGp4eVpXTjBJSGRwWkhSb1BTSXhPVElpSUdobGFXZG9kRDBpTVRreUlpQnllRDBpTVRJaUlHWnBiR3c5SWlNeE9UYzJSRElpTHo0OEwzTjJaejQ9Iiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0iIzE5NzZEMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzE5NzZEMiIvPjwvc3ZnPg==">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1976D2',
+                        secondary: '#FF5722',
+                        dark: {
+                            surface: '#1E1E1E',
+                            background: '#121212'
+                        }
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="font-inter bg-gray-50 dark:bg-dark-background text-gray-900 dark:text-white transition-colors duration-200">
+    
+    <!-- Navigation Header -->
+    <header class="bg-white dark:bg-dark-surface shadow-sm border-b dark:border-gray-700">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-taxi text-2xl text-primary"></i>
+                <h1 class="text-xl font-semibold" data-mock="true">AIUB Rickshaw Guide</h1>
+            </div>
+            <div class="flex items-center space-x-2">
+                <!-- Language Toggle -->
+                <button id="languageToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" data-event="click:toggleLanguage">
+                    <span class="text-sm font-medium" data-mock="true">EN</span>
+                </button>
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" data-event="click:toggleTheme">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 py-6 space-y-6">
+        
+        <!-- Welcome Section -->
+        <!-- @COMPONENT: WelcomeHeader -->
+        <div class="text-center space-y-2">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white" data-mock="true">
+                <span class="english-text">Welcome, AIUB Student!</span>
+                <span class="bengali-text hidden">স্বাগতম, এআইইউবি শিক্ষার্থী!</span>
+            </h2>
+            <p class="text-gray-600 dark:text-gray-300" data-mock="true">
+                <span class="english-text">Get fair rickshaw fare estimates for your daily commute</span>
+                <span class="bengali-text hidden">আপনার দৈনিক যাতায়াতের জন্য ন্যায্য রিকশা ভাড়ার অনুমান পান</span>
+            </p>
+        </div>
+        <!-- @END_COMPONENT: WelcomeHeader -->
+
+        <!-- Main Query Section -->
+        <!-- @COMPONENT: RouteSelector -->
+        <div class="bg-white dark:bg-dark-surface rounded-2xl shadow-lg p-6 space-y-4">
+            <h3 class="text-lg font-semibold mb-4" data-mock="true">
+                <span class="english-text">Where are you going from and to?</span>
+                <span class="bengali-text hidden">আপনি কোথা থেকে কোথায় যাচ্ছেন?</span>
+            </h3>
+            
+            <!-- From Input -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-mock="true">
+                    <span class="english-text">From</span>
+                    <span class="bengali-text hidden">থেকে</span>
+                </label>
+                <div class="relative">
+                    <select id="fromLocation" class="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all" data-event="change:calculateFare" data-mock="true">
+                        <option value="">Select starting point</option>
+                        <option value="aiub">AIUB</option>
+                        <option value="kuril-railgate">Kuril Railgate</option>
+                        <option value="jamuna-future-park">Jamuna Future Park</option>
+                        <option value="g-block">G Block</option>
+                        <option value="kuril-bishwaroad">Kuril Bishwaroad</option>
+                        <option value="evercare-gate">Evercare Gate</option>
+                        <option value="top-ten-a-block">Top Ten (A Block)</option>
+                        <option value="hazi-bari-masjid">Hazi Bari Masjid</option>
+                        <option value="mridha-bari-masjid">Mridha Bari Masjid</option>
+                        <option value="walton-bari">Walton Bari</option>
+                        <option value="jamuna-check-post">Jamuna Check Post</option>
+                        <option value="k-block">K Block</option>
+                        <option value="ghatpar">Ghatpar</option>
+                        <option value="koilabari">Koilabari</option>
+                        <option value="tiner-bera">Tiner Bera</option>
+                        <option value="300-feet-mor">300 Feet Mor</option>
+                        <option value="i-block">I Block</option>
+                        <option value="kuril-chowrasta">Kuril Chowrasta</option>
+                        <option value="kuril-kazi-bari">Kuril Kazi Bari</option>
+                        <option value="rupayan">Rupayan</option>
+                    </select>
+                    <i class="fas fa-map-marker-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Swap Button -->
+            <div class="flex justify-center">
+                <button id="swapButton" class="p-3 rounded-full bg-primary text-white hover:bg-blue-700 transition-colors shadow-lg" data-event="click:swapLocations" data-implementation="Should swap values between From and To dropdowns">
+                    <i class="fas fa-exchange-alt"></i>
+                </button>
+            </div>
+
+            <!-- To Input -->
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-mock="true">
+                    <span class="english-text">To</span>
+                    <span class="bengali-text hidden">পর্যন্ত</span>
+                </label>
+                <div class="relative">
+                    <select id="toLocation" class="w-full p-3 pr-10 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all" data-event="change:calculateFare" data-mock="true">
+                        <option value="">Select destination</option>
+                        <option value="aiub">AIUB</option>
+                        <option value="kuril-railgate">Kuril Railgate</option>
+                        <option value="jamuna-future-park">Jamuna Future Park</option>
+                        <option value="g-block">G Block</option>
+                        <option value="kuril-bishwaroad">Kuril Bishwaroad</option>
+                        <option value="evercare-gate">Evercare Gate</option>
+                        <option value="top-ten-a-block">Top Ten (A Block)</option>
+                        <option value="hazi-bari-masjid">Hazi Bari Masjid</option>
+                        <option value="mridha-bari-masjid">Mridha Bari Masjid</option>
+                        <option value="walton-bari">Walton Bari</option>
+                        <option value="jamuna-check-post">Jamuna Check Post</option>
+                        <option value="k-block">K Block</option>
+                        <option value="ghatpar">Ghatpar</option>
+                        <option value="koilabari">Koilabari</option>
+                        <option value="tiner-bera">Tiner Bera</option>
+                        <option value="300-feet-mor">300 Feet Mor</option>
+                        <option value="i-block">I Block</option>
+                        <option value="kuril-chowrasta">Kuril Chowrasta</option>
+                        <option value="kuril-kazi-bari">Kuril Kazi Bari</option>
+                        <option value="rupayan">Rupayan</option>
+                    </select>
+                    <i class="fas fa-map-marker-alt absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
+            <!-- Use My Location Button -->
+            <button id="useLocationButton" class="w-full p-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-medium transition-colors flex items-center justify-center space-x-2" data-event="click:useCurrentLocation" data-implementation="Should use geolocation API to get current location">
+                <i class="fas fa-location-crosshairs"></i>
+                <span data-mock="true">
+                    <span class="english-text">Use My Current Location</span>
+                    <span class="bengali-text hidden">আমার বর্তমান অবস্থান ব্যবহার করুন</span>
+                </span>
+            </button>
+        </div>
+        <!-- @END_COMPONENT: RouteSelector -->
+
+        <!-- Fare Estimation Result -->
+        <!-- @COMPONENT: FareResult -->
+        <div id="fareResult" class="bg-white dark:bg-dark-surface rounded-2xl shadow-lg p-6 hidden" data-state="isResultVisible:boolean = false">
+            <div class="text-center space-y-4">
+                <div class="flex items-center justify-center space-x-2">
+                    <i class="fas fa-route text-primary text-xl"></i>
+                    <h3 class="text-lg font-semibold" data-mock="true">
+                        <span class="english-text">Estimated Fare</span>
+                        <span class="bengali-text hidden">আনুমানিক ভাড়া</span>
+                    </h3>
+                </div>
+                
+                <div class="bg-primary/10 dark:bg-primary/20 rounded-xl p-4">
+                    <div class="text-3xl font-bold text-primary" data-bind="estimatedFare" data-mock="true">৳ 30</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-300 mt-1" data-mock="true">
+                        <span class="english-text">Approximate distance: </span>
+                        <span class="bengali-text hidden">আনুমানিক দূরত্ব: </span>
+                        <span data-bind="estimatedDistance" data-mock="true">2.5 km</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+                    <span data-mock="true">
+                        <span class="english-text">Route: </span>
+                        <span class="bengali-text hidden">রুট: </span>
+                        <span data-bind="routeDescription" data-mock="true">AIUB → G Block</span>
+                    </span>
+                    <span class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded-full" data-mock="true">
+                        <span class="english-text">Est.</span>
+                        <span class="bengali-text hidden">আনুমানিক</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: FareResult -->
+
+        <!-- Map Display -->
+        <!-- @COMPONENT: MapContainer -->
+        <div id="mapContainer" class="bg-white dark:bg-dark-surface rounded-2xl shadow-lg overflow-hidden hidden" data-state="isMapVisible:boolean = false">
+            <div class="p-4 border-b dark:border-gray-700">
+                <h3 class="font-semibold flex items-center space-x-2">
+                    <i class="fas fa-map text-primary"></i>
+                    <span data-mock="true">
+                        <span class="english-text">Route Map</span>
+                        <span class="bengali-text hidden">রুট ম্যাপ</span>
+                    </span>
+                </h3>
+            </div>
+            <div id="mapDisplay" class="h-64 bg-gray-100 dark:bg-gray-700 flex items-center justify-center" data-implementation="Google Maps integration with route visualization">
+                <!-- Map placeholder - would integrate with Google Maps API -->
+                <div class="text-center text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-map text-4xl mb-2"></i>
+                    <p data-mock="true">
+                        <span class="english-text">Interactive map will appear here</span>
+                        <span class="bengali-text hidden">ইন্টারঅ্যাক্টিভ ম্যাপ এখানে প্রদর্শিত হবে</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: MapContainer -->
+
+        <!-- Advisory Message -->
+        <!-- @COMPONENT: AdvisorySection -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-4">
+            <div class="flex items-start space-x-3">
+                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                <div class="space-y-2">
+                    <h4 class="font-semibold text-blue-900 dark:text-blue-200" data-mock="true">
+                        <span class="english-text">Safety & Fare Tips</span>
+                        <span class="bengali-text hidden">নিরাপত্তা ও ভাড়ার টিপস</span>
+                    </h4>
+                    <ul class="text-sm text-blue-800 dark:text-blue-300 space-y-1" data-mock="true">
+                        <li class="english-text">• Always negotiate fare before starting the journey</li>
+                        <li class="english-text">• Keep emergency contacts handy</li>
+                        <li class="english-text">• Share your location with friends/family</li>
+                        <li class="english-text">• Prefer well-lit routes during night travel</li>
+                        
+                        <li class="bengali-text hidden">• যাত্রা শুরুর আগে সর্বদা ভাড়া দর কষাকষি করুন</li>
+                        <li class="bengali-text hidden">• জরুরি যোগাযোগের নম্বর হাতের কাছে রাখুন</li>
+                        <li class="bengali-text hidden">• বন্ধু/পরিবারের সাথে অবস্থান শেয়ার করুন</li>
+                        <li class="bengali-text hidden">• রাতের যাত্রায় আলোকিত পথ পছন্দ করুন</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: AdvisorySection -->
+
+        <!-- PWA Install Banner -->
+        <!-- @COMPONENT: InstallBanner -->
+        <div id="installBanner" class="bg-gradient-to-r from-primary to-blue-600 text-white rounded-2xl p-4 hidden" data-state="isInstallable:boolean = false">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-mobile-alt text-2xl"></i>
+                    <div>
+                        <h4 class="font-semibold" data-mock="true">
+                            <span class="english-text">Install App</span>
+                            <span class="bengali-text hidden">অ্যাপ ইনস্টল করুন</span>
+                        </h4>
+                        <p class="text-sm opacity-90" data-mock="true">
+                            <span class="english-text">Add to home screen for quick access</span>
+                            <span class="bengali-text hidden">দ্রুত অ্যাক্সেসের জন্য হোম স্ক্রিনে যুক্ত করুন</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="installButton" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-colors" data-event="click:installPWA">
+                        <span class="english-text">Install</span>
+                        <span class="bengali-text hidden">ইনস্টল</span>
+                    </button>
+                    <button id="dismissInstall" class="p-2 hover:bg-white/20 rounded-lg transition-colors" data-event="click:dismissInstall">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: InstallBanner -->
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-md mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 border-t dark:border-gray-700 mt-8">
+        <p data-mock="true">
+            <span class="english-text">Made for AIUB students with ❤️</span>
+            <span class="bengali-text hidden">এআইইউবি শিক্ষার্থীদের জন্য ❤️ দিয়ে তৈরি</span>
+        </p>
+        <p class="mt-1 text-xs" data-mock="true">
+            <span class="english-text">© 2024 AIUB Rickshaw Guide</span>
+            <span class="bengali-text hidden">© ২০২৪ এআইইউবি রিকশা গাইড</span>
+        </p>
+    </footer>
+
+    <script>
+        // TODO: Implement PWA service worker registration, Google Maps API integration, geolocation services, and state management
+
+        (function() {
+            // Fare dataset
+            const fareData = {
+                'aiub-kuril-bishwaroad': 20,
+                'aiub-kuril-railgate': 30,
+                'aiub-jamuna-future-park': 40,
+                'aiub-g-block': 30,
+                'aiub-evercare-gate': 40,
+                'aiub-top-ten-a-block': 30,
+                'aiub-hazi-bari-masjid': 20,
+                'aiub-mridha-bari-masjid': 20,
+                'aiub-walton-bari': 40,
+                'aiub-jamuna-check-post': 30,
+                'aiub-k-block': 60,
+                'aiub-ghatpar': 30,
+                'aiub-koilabari': 20,
+                'aiub-tiner-bera': 30,
+                'aiub-300-feet-mor': 40,
+                'aiub-i-block': 40,
+                'aiub-kuril-chowrasta': 30,
+                'aiub-kuril-kazi-bari': 20,
+                'aiub-rupayan': 20
+            };
+
+            // Theme management
+            const themeToggle = document.getElementById('themeToggle');
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            
+            if (currentTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+
+            themeToggle.addEventListener('click', function() {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            // Language management
+            const languageToggle = document.getElementById('languageToggle');
+            const currentLanguage = localStorage.getItem('language') || 'en';
+            
+            function updateLanguage(lang) {
+                const englishElements = document.querySelectorAll('.english-text');
+                const bengaliElements = document.querySelectorAll('.bengali-text');
+                
+                if (lang === 'bn') {
+                    englishElements.forEach(el => el.classList.add('hidden'));
+                    bengaliElements.forEach(el => el.classList.remove('hidden'));
+                    languageToggle.querySelector('span').textContent = 'বাং';
+                } else {
+                    englishElements.forEach(el => el.classList.remove('hidden'));
+                    bengaliElements.forEach(el => el.classList.add('hidden'));
+                    languageToggle.querySelector('span').textContent = 'EN';
+                }
+            }
+
+            updateLanguage(currentLanguage);
+
+            languageToggle.addEventListener('click', function() {
+                const currentLang = localStorage.getItem('language') || 'en';
+                const newLang = currentLang === 'en' ? 'bn' : 'en';
+                localStorage.setItem('language', newLang);
+                updateLanguage(newLang);
+            });
+
+            // Route calculation
+            function calculateFare() {
+                const fromLocation = document.getElementById('fromLocation').value;
+                const toLocation = document.getElementById('toLocation').value;
+                const fareResult = document.getElementById('fareResult');
+                const mapContainer = document.getElementById('mapContainer');
+
+                if (fromLocation && toLocation && fromLocation !== toLocation) {
+                    // Create fare key (always put aiub first for consistent lookup)
+                    let fareKey;
+                    if (fromLocation === 'aiub') {
+                        fareKey = `${fromLocation}-${toLocation}`;
+                    } else if (toLocation === 'aiub') {
+                        fareKey = `${toLocation}-${fromLocation}`;
+                    } else {
+                        // For non-AIUB routes, use a default fare calculation
+                        fareKey = null;
+                    }
+
+                    const fare = fareKey && fareData[fareKey] ? fareData[fareKey] : Math.floor(Math.random() * 30) + 20;
+                    const distance = (fare / 15).toFixed(1); // Rough distance estimation
+
+                    // Update fare display
+                    fareResult.querySelector('[data-bind="estimatedFare"]').textContent = `৳ ${fare}`;
+                    fareResult.querySelector('[data-bind="estimatedDistance"]').textContent = `${distance} km`;
+                    fareResult.querySelector('[data-bind="routeDescription"]').textContent = 
+                        `${fromLocation.replace('-', ' ').toUpperCase()} → ${toLocation.replace('-', ' ').toUpperCase()}`;
+
+                    fareResult.classList.remove('hidden');
+                    mapContainer.classList.remove('hidden');
+                } else {
+                    fareResult.classList.add('hidden');
+                    mapContainer.classList.add('hidden');
+                }
+            }
+
+            // Event listeners
+            document.getElementById('fromLocation').addEventListener('change', calculateFare);
+            document.getElementById('toLocation').addEventListener('change', calculateFare);
+
+            // Swap locations
+            document.getElementById('swapButton').addEventListener('click', function() {
+                const fromSelect = document.getElementById('fromLocation');
+                const toSelect = document.getElementById('toLocation');
+                const tempValue = fromSelect.value;
+                fromSelect.value = toSelect.value;
+                toSelect.value = tempValue;
+                calculateFare();
+            });
+
+            // Use current location
+            document.getElementById('useLocationButton').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        // In a real implementation, this would reverse geocode the coordinates
+                        document.getElementById('fromLocation').value = 'current-location';
+                        document.getElementById('toLocation').value = 'aiub';
+                        calculateFare();
+                        alert('Location detected! Using current location as starting point.');
+                    }, function() {
+                        alert('Unable to get your location. Please select manually.');
+                    });
+                } else {
+                    alert('Geolocation is not supported by this browser.');
+                }
+            });
+
+            // PWA install functionality
+            let deferredPrompt;
+            const installBanner = document.getElementById('installBanner');
+            const installButton = document.getElementById('installButton');
+            const dismissInstall = document.getElementById('dismissInstall');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installBanner.classList.remove('hidden');
+            });
+
+            installButton.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installBanner.classList.add('hidden');
+                }
+            });
+
+            dismissInstall.addEventListener('click', () => {
+                installBanner.classList.add('hidden');
+            });
+
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZXZlbnQpIHt9KTtzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZnVuY3Rpb24oZXZlbnQpIHt9KTs=')
+                    .then(() => console.log('Service Worker registered'))
+                    .catch(() => console.log('Service Worker registration failed'));
+            }
+        })();
+    </script>
+</body>
+</html>

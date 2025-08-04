@@ -21,7 +21,7 @@ export function FareResult({ result, fromLocationName, toLocationName }: FareRes
         <div className="flex items-center justify-center space-x-2">
           <Route className="text-primary text-xl" />
           <h3 className="text-lg font-semibold" data-testid="fare-result-title">
-            {t('Estimated Fare', 'আনুমানিক ভাড়া')}
+            {t('Fare Amount:', 'ভাড়ার পরিমাণ:')}
           </h3>
         </div>
         

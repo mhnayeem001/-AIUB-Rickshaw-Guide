@@ -1,12 +1,13 @@
+
 import { useState, useEffect } from 'react';
-import { CarTaxiFront, Moon, Sun, Languages } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WelcomeHeader } from '@/components/welcome-header';
 import { RouteSelector } from '@/components/route-selector';
 import { FareResult } from '@/components/fare-result';
-import { MapContainer } from '@/components/map-container';
+
 import { AdvisorySection } from '@/components/advisory-section';
-import { InstallBanner } from '@/components/install-banner';
+
 import { useTheme } from '@/hooks/use-theme';
 import { useLanguage } from '@/hooks/use-language';
 import { calculateFare, estimateDistance, locations } from '@/lib/fare-data';
@@ -49,13 +50,23 @@ export default function Home() {
     return location ? (language === 'en' ? location.nameEn : location.nameBn) : '';
   };
 
+  // Conditional image source based on theme
+ const rickshawImageSrc =
+  theme === 'dark'
+    ? 'https://raw.githubusercontent.com/mhnayeem001/Picture/main/ricksha%20red%203.png'
+    : 'https://raw.githubusercontent.com/mhnayeem001/Picture/main/pedicab-rickshaw-icon-vector-45102478.avif';
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200">
       {/* Navigation Header */}
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
         <div className="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <CarTaxiFront className="text-2xl text-primary" />
+            <img
+              src={rickshawImageSrc}
+              alt="Rickshaw Icon"
+              className="w-8 h-8 object-contain"
+            />
             <h1 className="text-xl font-semibold" data-testid="app-title">
               {t('AIUB Rickshaw Guide', 'এআইইউবি রিকশা গাইড')}
             </h1>
@@ -108,24 +119,31 @@ export default function Home() {
           toLocationName={getLocationName(toLocation)}
         />
         
-        <MapContainer
-          isVisible={!!fareResult}
-        />
+        
+        {/* MapContainer component is not used in this version, so it's commented out */}
+        {/* <MapContainer
+          fromLocation={fromLocation}
+          toLocation={toLocation}
+          fareResult={fareResult}
+        /> */}
+        
+        {/* Advisory Section */}  
         
         <AdvisorySection />
         
-        <InstallBanner />
+        
       </main>
 
-      {/* Footer */}
-      <footer className="max-w-md mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 border-t dark:border-gray-700 mt-8">
-        <p data-testid="footer-credit">
-          {t('Made for AIUB students with ❤️', 'এআইইউবি শিক্ষার্থীদের জন্য ❤️ দিয়ে তৈরি')}
-        </p>
-        <p className="mt-1 text-xs" data-testid="footer-copyright">
-          {t('© 2024 AIUB Rickshaw Guide', '© ২০২৪ এআইইউবি রিকশা গাইড')}
-        </p>
-      </footer>
+     {/* Footer */}
+{/* Footer */}
+<footer className="max-w-md mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 border-t dark:border-gray-700 mt-8">
+  <p data-testid="footer-credit">
+    {t('Made for AIUB students with ❤️', 'এআইইউবি শিক্ষার্থীদের জন্য ❤️ দিয়ে তৈরি')}
+  </p>
+  <p className="mt-1 text-xs" data-testid="footer-copyright">
+    {t('© 2024 AIUB Rickshaw Guide. All rights reserved.', '© ২০২৪ এআইইউবি রিকশা গাইড। সর্বস্বত্ব সংরক্ষিত।')}
+  </p>
+</footer>
     </div>
   );
 }
