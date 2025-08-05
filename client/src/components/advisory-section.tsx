@@ -110,7 +110,7 @@ ID: 22-46137-1`,
 >
   {showMessage
     ? t('Hide the Message', 'বার্তা লুকান')
-    : t('A small message from my side (Nothing too important)', 'আমার পক্ষ থেকে একটি ছোট বার্তা (গুরুত্বপূর্ণ কিছু নয়)')}
+    : t('A message from my side (Nothing too important)', 'আমার পক্ষ থেকে একটি বার্তা (গুরুত্বপূর্ণ কিছু নয়)')}
 </Button>
 
 {showMessage && (
